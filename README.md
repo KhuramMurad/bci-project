@@ -219,6 +219,9 @@ python realtime_control.py
 
 ## Running with Docker
 
+The container includes Python 3.10, the Python packages, and the bundled `liblsl`
+binary used by PyLSL. A new machine only needs Docker or Podman.
+
 Build the Python 3.10 container:
 
 ```bash
@@ -241,6 +244,21 @@ Then open:
 
 ```text
 http://localhost:5000
+```
+
+On Apple Silicon or another ARM machine, use the Linux amd64 platform because
+the bundled `liblsl` binary in this repo is amd64:
+
+```bash
+docker build --platform linux/amd64 -t bci-platform .
+docker run --platform linux/amd64 --rm bci-platform
+```
+
+Podman works with the same commands:
+
+```bash
+podman build -t bci-platform .
+podman run --rm bci-platform
 ```
 
 ### Machine Learning Workflow

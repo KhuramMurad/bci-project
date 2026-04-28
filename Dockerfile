@@ -19,6 +19,8 @@ RUN pip install --upgrade pip \
 
 COPY . .
 
+RUN python -c "import brainflow, flask, flask_cors, flask_socketio, numpy, pylsl, serial, sklearn, tensorflow; print('Container dependency smoke check passed')"
+
 EXPOSE 5000
 
 CMD ["python", "main.py"]
