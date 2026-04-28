@@ -38,6 +38,7 @@ pycryptodome==3.18.0
 flask==2.3.2
 flask-cors==4.0.0
 flask-socketio==5.3.4
+werkzeug<3
 
 # Device Integration
 pyserial==3.5
