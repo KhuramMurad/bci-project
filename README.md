@@ -217,6 +217,32 @@ python train_model.py
 Step 4 – Run Real-Time Control System
 python realtime_control.py
 
+## Running with Docker
+
+Build the Python 3.10 container:
+
+```bash
+docker build -t bci-platform .
+```
+
+Run the smoke test:
+
+```bash
+docker run --rm bci-platform
+```
+
+Run the Flask/Socket.IO web app:
+
+```bash
+docker run --rm -p 5000:5000 bci-platform python app.py
+```
+
+Then open:
+
+```text
+http://localhost:5000
+```
+
 ### Machine Learning Workflow
 
 Collect EEG data

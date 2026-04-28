@@ -1,0 +1,13 @@
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.log
+
+# Keep the extracted liblsl folder because PyLSL needs the bundled .so file.
+liblsl-1.17.7-jammy_amd64.tar.gz
