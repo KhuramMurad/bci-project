@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from flask_cors import CORS
+import os
 import time
 import threading
 from digital_twin_bci import DigitalTwinBCI
@@ -51,4 +52,6 @@ def test_disconnect():
 
 if __name__ == '__main__':
     # Start the server with SocketIO
-    socketio.run(app, debug=True, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
+    host = os.getenv('HOST', '0.0.0.0')
+    port = int(os.getenv('PORT', '5000'))
+    socketio.run(app, debug=True, host=host, port=port, allow_unsafe_werkzeug=True)

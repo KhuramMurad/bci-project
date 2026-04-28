@@ -174,31 +174,54 @@ ISO 14155
 
 FDA 510(k)
 
-### Installation Guide
+## Local Installation
 
+The default local install is intentionally small. It installs only the Flask and
+Socket.IO dependencies needed by the dashboard in `app.py`, so you can run the
+web app without compiling the hardware and ML stack.
 
-1️⃣ Clone Repository
-git clone https://https://https://github.com/Wareeday/real-time-Brain-Computer-Interface-BCI-platform
-cd bci-platform
+```bash
+git clone https://github.com/KhuramMurad/bci-project.git
+cd bci-project
+uv sync
+PORT=5001 uv run python app.py
+```
 
+Then open:
 
-2️⃣ Create Virtual Environment
-python3 -m venv bci_env
-source bci_env/bin/activate
+```text
+http://localhost:5001
+```
 
+### Optional BCI Modules
 
-3️⃣ Install Dependencies
-uv add -r requirements.txt
+Install only the extras needed for the workflow you are running:
 
+```bash
+uv sync --extra hardware
+uv sync --extra streaming
+uv sync --extra ml
+uv sync --extra privacy
+uv sync --extra visualization
+```
 
-Or manually:
+For the complete research stack:
 
-uv add numpy scipy pandas matplotlib
-uv add mne pylsl
-uv add scikit-learn tensorflow torch
-uv add kafka-python pyserial pyttsx3 cryptography
+```bash
+uv sync --all-extras
+```
 
-## Running the Project
+On Fedora, the legacy `pyopenbci` package pulls in `bluepy`, which needs GLib
+development headers to compile. This project uses BrainFlow for OpenBCI access,
+so `pyopenbci` is not installed by default. If you add it manually, install the
+system header package first:
+
+```bash
+sudo dnf install glib2-devel
+uv pip install pyopenbci
+```
+
+## Running the Project Modules
 
 Step 1 – Start EEG Stream
 
@@ -236,7 +259,7 @@ podman build -t bci-platform .
 Run the smoke test:
 
 ```bash
-podman run --rm bci-platform
+podman run --rm bci-platform python -c "import app; print('Container web smoke test passed')"
 ```
 
 Run the Flask/Socket.IO web app:
@@ -264,7 +287,7 @@ docker build -t bci-platform .
 Run the smoke test:
 
 ```bash
-docker run --rm bci-platform
+docker run --rm bci-platform python -c "import app; print('Container web smoke test passed')"
 ```
 
 Run the Flask/Socket.IO web app:
@@ -288,6 +311,10 @@ docker run --platform linux/amd64 --rm -p 5000:5000 bci-platform python app.py
 podman build --platform linux/amd64 -t bci-platform .
 podman run --platform linux/amd64 --rm -p 5000:5000 bci-platform python app.py
 ```
+
+The app reads `PORT` from the environment. Use `PORT=5001 uv run python app.py`
+for local development and keep the container mapped to host port `5000` if you
+want both deployments available at the same time.
 
 ### Machine Learning Workflow
 
