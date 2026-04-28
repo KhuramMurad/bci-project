@@ -217,14 +217,47 @@ python train_model.py
 Step 4 – Run Real-Time Control System
 python realtime_control.py
 
-## Running with Docker
+## Running on Another System with Podman or Docker
 
 The container includes Python 3.10, the Python packages, and the bundled `liblsl`
-binary used by PyLSL. A new machine only needs Docker or Podman.
+binary used by PyLSL. A new machine only needs Podman or Docker.
 
-Build the Python 3.10 container:
+### Option 1: Podman
+
+Podman is commonly available on Fedora, so this is the recommended path for a
+Fedora laptop.
 
 ```bash
+git clone https://github.com/KhuramMurad/bci-project.git
+cd bci-project
+podman build -t bci-platform .
+```
+
+Run the smoke test:
+
+```bash
+podman run --rm bci-platform
+```
+
+Run the Flask/Socket.IO web app:
+
+```bash
+podman run --rm -p 5000:5000 bci-platform python app.py
+```
+
+Then open:
+
+```text
+http://localhost:5000
+```
+
+### Option 2: Docker
+
+Use this path if Docker is installed instead of Podman.
+
+```bash
+git clone https://github.com/KhuramMurad/bci-project.git
+cd bci-project
 docker build -t bci-platform .
 ```
 
@@ -251,14 +284,9 @@ the bundled `liblsl` binary in this repo is amd64:
 
 ```bash
 docker build --platform linux/amd64 -t bci-platform .
-docker run --platform linux/amd64 --rm bci-platform
-```
-
-Podman works with the same commands:
-
-```bash
-podman build -t bci-platform .
-podman run --rm bci-platform
+docker run --platform linux/amd64 --rm -p 5000:5000 bci-platform python app.py
+podman build --platform linux/amd64 -t bci-platform .
+podman run --platform linux/amd64 --rm -p 5000:5000 bci-platform python app.py
 ```
 
 ### Machine Learning Workflow
